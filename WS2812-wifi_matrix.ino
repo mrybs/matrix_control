@@ -39,9 +39,9 @@
 #define INFO_PROGRAM_NAME "Mrybs` Public Matrix Firmware"
 #define INFO_MAJOR_VERSION "1"
 #define INFO_MINOR_VERSION "0"
-#define INFO_BUILD "260623A"
+#define INFO_BUILD "270623A"
 #define INFO_BUILD_TYPE "SNAPSHOT"
-#define INFO_BUILD_SUBTYPE "REFACTOR"
+#define INFO_BUILD_SUBTYPE "NEW"
 #define INFO_DEBUG "SERIAL_INDICATOR"
 
 
@@ -66,6 +66,7 @@ byte sChance = 20;
 byte sHue = 127;
 byte sSaturation = 0;
 int sSpeed = 256;
+bool sRainbow = false;
 
 
 void setup() {
@@ -95,6 +96,11 @@ void setup() {
   FastLED.show();
 
   server.on("/api", HTTP_GET, handleApi);
+  server.on("/", HTTP_GET, handleGUI_index_html);
+  server.on("/index.js", HTTP_GET, handleGUI_index_js);
+  server.on("/styles.css", HTTP_GET, handleGUI_styles_css);
+  server.on("/canvas.js", HTTP_GET, handleGUI_canvas_js);
+  server.enableCORS(true);
   server.begin();
 }
 

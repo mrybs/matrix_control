@@ -17,6 +17,7 @@ void handleApi() {
       for(int i = 0; i < NUM_LEDS; i++){
         leds[i] = CRGB(r, g, b);
       }
+      effect_id = "off";
     }
     if(function == "pixel"){
       int x = 0;
@@ -47,6 +48,7 @@ void handleApi() {
         b = argB.toInt();
       }
       drawPixel(x, y, CRGB(r, g, b));
+      effect_id = "off";
     }
     if(function == "image"){
       if(!server.hasArg("image")){
@@ -57,18 +59,13 @@ void handleApi() {
       String image = server.arg("image");
       Serial.println(image);
       for(int i = 0; i < NUM_LEDS; i++){
-        Serial.print(strToHex(String(image[i*8])+"0")*15 + strToHex(String(image[i*8+1])+"0"));
-        Serial.print(", ");
-        Serial.print(strToHex(String(image[i*8+2])+"0")*15 + strToHex(String(image[i*8+3]+"0")));
-        Serial.print(", ");
-        Serial.print(strToHex(String(image[i*8+4])+"0")*15 + strToHex(String(image[i*8+5]+"0")));
-        Serial.println("");
         drawPixelByIndex(i, CRGB(
           strToHex(String(image[i*8])+"0")*15 + strToHex(String(image[i*8+1])+"0"),
           strToHex(String(image[i*8+2])+"0")*15 + strToHex(String(image[i*8+3])+"0"),
           strToHex(String(image[i*8+4])+"0")*15 + strToHex(String(image[i*8+5])+"0")
         ));
       }
+      effect_id = "off";
     }
     if(function == "getInfo"){
       server.send(200, "text/plain", String("NAME:") + INFO_NAME + 
@@ -91,6 +88,46 @@ void handleApi() {
       }
       effect_id = server.arg("effect");
     }
+    if(function == "effectSettings"){
+      if(server.hasArg("hue"))
+        sHue = server.arg("hue").toInt();
+      if(server.hasArg("rainbow"))
+        sRainbow = server.arg("rainbow").toInt();
+      if(server.hasArg("speed"))
+        sSpeed = server.arg("speed").toInt();
+      if(server.hasArg("saturation"))
+        sSaturation = server.arg("saturation").toInt();
+      if(server.hasArg("chance"))
+        sChance = server.arg("chance").toInt();
+    }
+    if(function == "getEffectSettings"){
+      digitalWrite(13, 0);
+      server.send(200, "text/plain", "{\"effect_id\":\""+effect_id+"\","+
+                                     "\"hue\":\""+String(sHue)+"\","+
+                                     "\"rainbow\":\""+String(sRainbow)+"\","+
+                                     "\"speed\":\""+String(sSpeed)+"\","+
+                                     "\"chance\":\""+String(sChance)+"\","+
+                                     "\"saturation\":\""+String(sSaturation)+"\"}");
+      return;
+    }
+    if(function == "getMatrix"){
+      String image = "";
+      for(int i = 0; i < NUM_LEDS; i++){
+        CRGB pixel = getPixelByIndex(i);
+        String r = String(pixel.r, HEX);
+        String g = String(pixel.g, HEX);
+        String b = String(pixel.b, HEX);
+        if(r.length() == 1) r="0"+r;
+        if(g.length() == 1) g="0"+g;
+        if(b.length() == 1) b="0"+b;
+        image += r;
+        image += g;
+        image += b;
+      }
+      digitalWrite(13, 0);
+      server.send(200, "text/plain", image);
+      return;
+    }
   }
   digitalWrite(13, 0);
   server.send(200, "text/plain", "OK");
@@ -98,4 +135,25 @@ void handleApi() {
 
 void setBrightness(byte brightness){
   FastLED.setBrightness(MAX_BRIGHTNESS*brightness/39-2);
+}
+
+void handleGUI_index_html(){
+  digitalWrite(13, 1);
+  server.send(200, "text/html", index_html);
+  digitalWrite(13, 0);
+}
+void handleGUI_index_js(){
+  digitalWrite(13, 1);
+  server.send(200, "text/javascript", index_js);
+  digitalWrite(13, 0);
+}
+void handleGUI_styles_css(){
+  digitalWrite(13, 1);
+  server.send(200, "text/css", styles_css);
+  digitalWrite(13, 0);
+}
+void handleGUI_canvas_js(){
+  digitalWrite(13, 1);
+  server.send(200, "text/javascript", canvas_js);
+  digitalWrite(13, 0);
 }
