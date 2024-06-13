@@ -1,0 +1,81 @@
+doctype ntml 0.2
+
+import(script, "text/javascript") "/matrix_control/holder(name="matrix_id")/index.js"
+import(style, "text/css") "/matrix_control/anyid/styles.css"
+import(style, "text/css") "/fm/get_file?url=styles/remirion.css&content_type=text/css"
+import(style, "text/css") "https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+import(style, "text/css") "https://use.fontawesome.com/releases/v6.4.0/css/all.css"
+import(script, "text/javascript") "https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"
+import(style, "text/css") "https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"
+
+
+title "Управление матрицей"
+
+body{
+	holder(id="iconbtn_enabled_color")
+	holder(id="iconbtn_disabled_color")
+
+	h1{Управление матрицей}
+
+	bl(class="center"){
+		h2{Выбор эффекта}
+		select(name="", class="combobox", id="effectSelect", onchange="setEffect()"){
+			holder(name="effects")
+		}
+	   	bl(class="settingsBox box"){
+			h3{Настройки эффектов}
+			bl(class="settings"){
+				bl(class="checkbox", id="rainbowCheckbox"){
+					input(class="checkboxMain", type="checkbox", id="rainbow", name="rainbow", onchange="onChange()"){}
+					bl(class="label", id="rainbowTitle"){Переливающиеся цвета}[nl]
+				}
+				bl(class="slider", id="hueSlider"){
+					bl(class="sliderLabel", id="hueLabel"){50 [per]}
+					input(class="sliderMain", type="range", id="hue", name="hue", min="0", max="100", onchange="onChange()"){}
+					bl(class="label", id="hueTitle"){Тон}[nl]
+				}
+				bl(class="slider", id="speedSlider"){
+					bl(class="sliderLabel", id="speedLabel"){50 [per]}
+					input(class="sliderMain", type="range", id="speed", name="speed", min="1", max="500", onchange="onChange()"){}
+					bl(class="label", id="speedTitle"){Скорость}[nl]
+				}
+				bl(class="slider", id="chanceSlider"){
+					bl(class="sliderLabel", id="chanceLabel"){50 [per]}
+					input(class="sliderMain", type="range", id="chance", name="chance", min="0", max="100", onchange="onChange()"){}
+					bl(class="label", id="chanceTitle"){Шанс}[nl]
+				}
+				bl(class="slider", id="saturationSlider"){
+					bl(class="sliderLabel", id="saturationLabel"){50 [per]}
+					input(class="sliderMain", type="range", id="saturation", name="saturation", min="0", max="100", onchange="onChange()"){}
+					bl(class="label", id="saturationTitle"){Насыщенность}[nl]
+				}
+			}
+	    }
+
+    	bl(id="showImage"){
+    		h2{Вывод картинки}
+    		input(class="textbox", id="imageTB", name="imageTB", placeholder="Картинка"){}
+    		button(id="imageBtn", onclick="imageLoad()"){Загрузить}
+    	}
+
+		h2{Рисовалка}
+		bl(class="canvasBox box", id="imageDrawCanvasBox"){
+			canvas(id="imageDrawCanvas"){Ваш браузер не поддерживает canvas}
+			input(id="imageDrawColorPicker", type="text", value="#000000", data-coloris="true"){}[nl]
+			bl(id="paint-tools"){
+				button(class="iconbtn", onclick="eRefresh()", id="refresh-btn"){text(class="fa-solid fa-rotate-right"){}}
+				button(class="iconbtn", onclick="eBrush()", id="paint-tool-brush"){text(class="paint-tool fa-solid fa-paintbrush"){}}
+				button(class="iconbtn", onclick="eFill()", id="paint-tool-fill"){text(class="paint-tool fa-solid fa-fill"){}}
+				button(class="iconbtn", onclick="eEyeDropper()", id="paint-tool-eye-dropper"){text(class="paint-tool fa-solid fa-eye-dropper"){}}
+			}
+			button(class="minibutton", onclick="sendImage()"){Отправить картинку}
+		}
+
+
+		script(lang="javascript", src="/matrix_control/holder(name="matrix_id")/canvas.js") #{}
+
+		script(lang="javascript") #{
+			reloadSettings();
+		}
+	}
+}

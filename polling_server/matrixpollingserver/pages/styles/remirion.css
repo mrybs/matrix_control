@@ -1,0 +1,71 @@
+*{
+	font-family: "Source Sans Pro",Helvetica,Arial,sans-serif;
+	font-style: bolder;
+	background-color: #02071a;
+	color: #a2807f;
+}
+h1,h2,h3,h4{
+	color: #b5782a;
+}
+button{
+	background-color: #02183c;
+	border: none;
+	border-radius: 5px;
+}
+button:hover{
+	background-color: #02183c;
+	border: none;
+	border-radius: 5px;
+}
+.iconbtn{
+	background-color: #02183c;
+	border: none;
+	border-radius: 5px;
+}
+.iconbtn:hover{
+	margin-top: 0;
+	border: none;
+}
+
+#iconbtn_enabled_color{background-color: #02183c;}
+#iconbtn_disabled_color{background-color: #02071a;}
+
+.slider, .checkbox{
+	background-color: #02183c;
+	border-radius: 5px;
+}
+.sliderLabel, .checkboxLabel{
+	background-color: #02183c;
+	border-radius: 5px;
+}
+.sliderMain, .checkboxMain{
+	background-color: #02183c;
+	border-radius: 5px;
+}
+.label{
+	background-color: #02183c;
+	border-radius: 5px;
+}
+input{
+	background-color: #02183c;
+	border-radius: 5px;
+	border: none;
+}
+input:focus, input:active{
+	border: none;
+}
+select{
+	background-color: #02183c;
+	border-radius: 5px;
+	border: none;
+}
+select:focus, select:active{
+	border: none;
+}
+.box, .box h1,.box h2,.box h3,.box h4{
+	background-color: #02183c;
+	border-radius: 5px;
+}
+.settings{
+	background-color: #02183c;
+}

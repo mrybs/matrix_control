@@ -1,0 +1,221 @@
+h1{
+	text-align: center;
+}
+button{
+	padding: 10px;
+}
+.textbox{
+	padding: 10px;
+	display: inline;
+}
+#effectSelect{
+	width: 20%;
+	display: block;
+	margin-left: 40%;
+}
+#imageTB{
+	width: 65%;
+}
+#imageBtn{
+	width: 25%;
+}
+#paint-tools{
+	margin-top: 10px;
+	display: block;
+}
+.center{
+	text-align: center;
+}
+.combobox{
+	padding: 10px;
+}
+input{
+	display: block;
+	text-align:center;
+	padding: 2px;
+}
+.settingsBox{
+	width: calc(20% - 30px);
+	margin-left: 40%;
+	padding: 15px;
+	margin-top: 20px;
+}
+.canvasBox{
+	width: calc(20% - 30px);
+	margin-left: 40%;
+	padding: 15px;
+	margin-top: 20px;
+}
+
+.label{
+	width: 37.5%;
+	text-align: right;
+	display: block;
+	font-size: 0.9em;
+}
+.checkboxLabel{
+	width: 90%;
+	text-align: right;
+	display: block;
+	font-size: 0.9em;
+}
+.slider, .checkbox{
+	display: flex;
+	margin-bottom:15px;
+}
+.sliderLabel{
+	display: inline-block;
+	width: 15%;
+	margin-left: 2px;
+	font-size: 0.9em;
+}
+.checkboxMain{
+	display: inline-block;
+	width: 15%;
+	margin-right: 3px;
+}
+.sliderMain{
+	display: inline-block;
+	width: 47.5%;
+	margin-right: 3px;
+}
+.minibutton{
+	margin-top: 10px;
+	width: 90%;
+}
+footer{
+	width: 100%;
+	height: 50px;
+	display: block;
+}
+
+@media only screen and (min-width: 201px) {
+#effectSelect{
+	width: 90%;
+	margin-left: 5%;
+}
+.settingsBox{
+	width: calc(90% - 30px);
+	margin-left: 5%;
+}
+.canvasBox{
+	width: calc(90% - 30px);
+	margin-left: 5%;
+}
+#showImage{
+	width: 90%;
+	margin-left: 5%;
+}
+}
+
+@media only screen and (min-width: 401px) {
+#effectSelect{
+	width: 80%;
+	margin-left: 10%;
+}
+.settingsBox{
+	width: calc(80% - 30px);
+	margin-left: 10%;
+}
+.canvasBox{
+	width: calc(80% - 30px);
+	margin-left: 10%;
+}
+#showImage{
+	width: 80%;
+	margin-left: 10%;
+}
+}
+
+@media only screen and (min-width: 601px) {
+#effectSelect{
+	width: 70%;
+	margin-left: 15%;
+}
+.settingsBox{
+	width: calc(70% - 30px);
+	margin-left: 15%;
+}
+.canvasBox{
+	width: calc(70% - 30px);
+	margin-left: 15%;
+}
+#showImage{
+	width: 70%;
+	margin-left: 15%;
+}
+}
+
+@media only screen and (min-width: 801px) {
+#effectSelect{
+	width: 50%;
+	margin-left: 25%;
+}
+.settingsBox{
+	width: calc(50% - 30px);
+	margin-left: 25%;
+}
+.canvasBox{
+	width: calc(50% - 30px);
+	margin-left: 25%;
+}
+#showImage{
+	width: 50%;
+	margin-left: 25%;
+}
+}
+
+@media only screen and (min-width: 1001px) {
+#effectSelect{
+	width: 40%;
+	margin-left: 30%;
+}
+.settingsBox{
+	width: calc(40% - 30px);
+	margin-left: 30%;
+}
+.canvasBox{
+	width: calc(40% - 30px);
+	margin-left: 30%;
+}
+#showImage{
+	width: 40%;
+	margin-left: 30%;
+}
+}
+@media only screen and (min-width: 1201px) {
+#effectSelect{
+	width: 30%;
+	margin-left: 35%;
+}
+.settingsBox{
+	width: calc(30% - 30px);
+	margin-left: 35%;
+}
+.canvasBox{
+	width: calc(30% - 30px);
+	margin-left: 35%;
+}
+#showImage{
+	width: 30%;
+	margin-left: 35%;
+}
+}
+@media only screen and (min-width: 1401px) {
+#effectSelect{
+	width: 25%;
+	margin-left: 37.5%;
+}
+.settingsBox{
+	width: calc(25% - 30px);
+	margin-left: 37.5%;
+}
+.canvasBox{
+	width: calc(25% - 30px);
+	margin-left: 37.5%;
+}
+#showImage{
+	width: 25%;
+	margin-left: 37.5%;
+}
+}

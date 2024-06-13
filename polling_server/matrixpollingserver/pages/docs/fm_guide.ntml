@@ -1,0 +1,13 @@
+doctype ntml 0.2
+
+import(style, "text/css") "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,600i,700"
+import(style, "text/css") "/fm/get_file?url=docs/styles.css&content_type=text/css"
+
+
+title "FM Памятка"
+
+
+body{
+	h1{FM Памятка}
+	
+}
