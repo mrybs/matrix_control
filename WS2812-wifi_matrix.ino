@@ -1,13 +1,14 @@
 #include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+//#include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <ESPAsyncWebServer.h>
 #include <FS.h>
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include <FastLED.h>
 //#include <ESPAsyncTCP.h>
 #include <WiFiClient.h>
-#include "LinkedList.h"
+#include "Vector.h"
 #include "arg.h"
 #include "utils.h"
 #include "response.h"
@@ -41,6 +42,7 @@
 //#define MMATRIX_PPS 0.5
 
 #define WAVES_AMOUNT 2
+#define BALLS_AMOUNT 3
 
 #define NUM_LEDS (NUM_LEDS_X*NUM_LEDS_Y)
 
@@ -52,17 +54,26 @@
 #define INFO_PROGRAM_NAME "Mrybs` Public Matrix firmware"
 #define INFO_MAJOR_VERSION "1"
 #define INFO_MINOR_VERSION "0"
-#define INFO_BUILD "130624a"
+#define INFO_BUILD "140624a"
 #define INFO_BUILD_TYPE "SNAPSHOT"
 #define INFO_BUILD_SUBTYPE "NEW"
-#define INFO_DEBUG "SERIAL"
 
-#define DEBUG_SERIAL
+#define EFFECTS {"balls", "rainbow", "color_explosion", "confetti", "sinusoid", "snowing", "perlin", "lava"}
 //#define OTA_ENABLE
 
+struct Vector2{
+  float x;
+  float y;
+};
+
+struct Ball{
+  Vector2 position;
+  Vector2 velocity;
+};
 
 CRGB leds[NUM_LEDS];
-ESP8266WebServer server(80);
+AsyncWebServer server(80);
+AsyncWebSocket ws("/ws");
 
 long long FPSControl = 0;
 long long DrawingControl = 0;
@@ -71,7 +82,7 @@ long long DrawingControl = 0;
 #endif
 byte breathBrightness = 50;
 bool breathBrightnessDirection = true;
-String effect_id = "ball";
+String effect_id = "balls";
 bool showingEffect = true;
 String mode_id = "none";
 
@@ -87,8 +98,10 @@ byte sBrightness = 100;
 byte w[WAVES_AMOUNT];
 byte phi[WAVES_AMOUNT];
 byte A[WAVES_AMOUNT];
+Ball balls[BALLS_AMOUNT];
 
 void setup() {
+  ESP.wdtEnable(0);
   FastLED.addLeds<LED_TYPE, MATRIX_PIN, LED_ORDER>(leds, NUM_LEDS).setCorrection(CORRECTION);
 
 #ifdef WIFI_CHANNEL
@@ -103,6 +116,15 @@ void setup() {
     leds[i] = CRGB(0, 50, 50);
     FastLED.show();
   }
+  Serial.println("Initialising effects...");
+
+  for(short i = 0; i < BALLS_AMOUNT; i++){
+    balls[i] = {
+      {float(rand()%100)/100, float(rand()%100)/100},
+      {float(rand()%100)/100, float(rand()%100)/100}
+    };
+  }
+  Serial.println("Balls created");
   Serial.println("Initialising filesystem...");
   SPIFFSConfig cfg;
   cfg.setAutoFormat(false);
@@ -138,12 +160,33 @@ void setup() {
   FastLED.show();
 
   server.on("/api", HTTP_GET, handleGETApi);
-  server.on("/api", HTTP_POST, handlePOSTApi);
-  server.on("/", HTTP_GET, handleGUI_index_html);
-  server.on("/index.js", HTTP_GET, handleGUI_index_js);
-  server.on("/styles.css", HTTP_GET, handleGUI_styles_css);
-  server.on("/canvas.js", HTTP_GET, handleGUI_canvas_js);
-  server.enableCORS(true);  
+  server.on("/api", HTTP_POST, [](AsyncWebServerRequest *request) {}, NULL, handlePOST);
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    File f = SPIFFS.open("/index.html", "r");
+    if(!f) return request->send(500, "plain/text", "Could not open file index.html");
+    request->send(200, "text/html", f.readString().c_str());
+    f.close();
+  });
+  server.on("/index.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    File f = SPIFFS.open("/index.js", "r");
+    if(!f) return request->send(500, "plain/text", "Could not open file index.js");
+    request->send(200, "text/javascript", f.readString().c_str());
+    f.close();
+  });
+  server.on("/styles.css", HTTP_GET, [](AsyncWebServerRequest *request){
+    File f = SPIFFS.open("/styles.css", "r");
+    if(!f) return request->send(500, "plain/text", "Could not open file styles.css");
+    request->send(200, "text/css", f.readString().c_str());
+    f.close();
+  });
+  server.on("/canvas.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    File f = SPIFFS.open("/canvas.js", "r");
+    if(!f) request->send(500, "plain/text", "Could not open file canvas.js");
+    request->send(200, "text/javascript", f.readString().c_str());
+    f.close();
+  });
+  ws.onEvent(onEvent);
+  server.addHandler(&ws);
   server.begin();
 
   #ifdef MMATRIX_TOKEN
@@ -166,9 +209,42 @@ void setup() {
   #endif
 } 
 
+void onEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len) {
+  if(type == WS_EVT_DATA) {
+    if(strcmp((const char*)data, "get_matrix") == 0){
+      char* image = new char[NUM_LEDS*3];
+      for(int i = 0; i < NUM_LEDS; i++){
+        #ifdef INVERT_X
+          short x = NUM_LEDS_X - i%NUM_LEDS_X - 1;
+        #else
+          short x = i%NUM_LEDS_X;
+        #endif
+        #ifdef INVERT_Y
+          short y = NUM_LEDS_Y - i/NUM_LEDS_Y - 1;
+        #else
+          short y = i/NUM_LEDS_Y;
+        #endif
+        #ifdef CONNECT_TYPE1
+          if(y%2==1) x=abs(x-NUM_LEDS_X+1);
+          memcpy(image+i*3, (const char*)leds[NUM_LEDS_Y*y+x].raw, 3);
+        #elif CONNECT_TYPE2
+          if(x%2==1) y=abs(y-NUM_LEDS_Y+1);
+          memcpy(image+i*3, (const char*)leds[NUM_LEDS_X*x+y].raw, 3);
+        #endif
+      }
+      client->binary(image, NUM_LEDS*3);
+      delete image;
+    }
+  } else if(type == WS_EVT_CONNECT) {
+    Serial.printf("Client connected: %u\n", client->id());
+  } else if(type == WS_EVT_DISCONNECT) {
+    Serial.printf("Client disconnected: %u\n", client->id());
+  }
+}
+
 
 void loop() {
-  server.handleClient();
+  //server.handleClient();
 #ifdef OTA_ENABLE
   ArduinoOTA.handle();
 #endif
@@ -183,8 +259,8 @@ void loop() {
   FastLED.show();
 }
 
-LinkedList<String> strsplit(String str, char d){
-  LinkedList<String> result;
+Vector<String> strsplit(String str, char d){
+  Vector<String> result;
   String line = "";
   for(int i = 0; i < str.length(); i++){
     if(str[i] == d){
@@ -197,12 +273,12 @@ LinkedList<String> strsplit(String str, char d){
   return result;
 }
 
-LinkedList<arg> strToArgs(String args){
-  LinkedList<arg> result;
-  LinkedList<String> params = strsplit(args, '&');
+Vector<arg> strToArgs(String args){
+  Vector<arg> result;
+  Vector<String> params = strsplit(args, '&');
   for(int i = 0; i < params.getLength(); i++){
     String param = params.getByIndex(i);
-    LinkedList<String> KD = strsplit(param, '=');
+    Vector<String> KD = strsplit(param, '=');
     result.Append(arg(KD.getByIndex(0), KD.getByIndex(1)));
   }
   return result;

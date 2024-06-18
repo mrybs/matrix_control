@@ -3,6 +3,12 @@ void showEffect(){
   if(effect_id == "rainbow"){
     eRainbow();
   }
+  else if(effect_id == "color_explosion"){
+    if(millis() - DrawingControl > 10000/sSpeed){
+      DrawingControl = millis();
+      eColorExplosion();
+    }
+  }
   else if(effect_id == "confetti"){
     if(millis() - DrawingControl > 10000/sSpeed){
       DrawingControl = millis();
@@ -21,7 +27,7 @@ void showEffect(){
       eSnowing();
     }
   }
-  else if(effect_id == "ball"){
+  else if(effect_id == "balls"){
     if(millis() - DrawingControl > 10000/sSpeed){
       DrawingControl = millis();
       eBall();

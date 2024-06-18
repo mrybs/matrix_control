@@ -1,5 +1,11 @@
 
-const IP = 'http://192.168.50.88/';
+const IP = '192.168.50.88';
+var websocket
+if(IP == ''){
+    websocket = new WebSocket(`ws://${window.location.host}/ws`)
+}else{
+    websocket = new WebSocket(`ws://${IP}/ws`)
+}
 
 let effect_id = "rainbow";
 let hue = 50;
@@ -14,22 +20,22 @@ let settings = {
     'off': [],
     'rainbow': ['speed', 'saturation'],
     'confetti': ['speed', 'saturation'],
-    'ball': ['hue', 'speed', 'saturation'],
-    'snowing': ['hue', 'speed', 'chance', 'saturation'],
-    'sinusoid': ['hue', 'speed', 'saturation'],
-    'doubleSinusoid': ['hue', 'speed', 'saturation'],
+    'color_explosion': ['speed'],
+    'balls': ['rainbow', 'speed', 'saturation'],
+    'snowing': ['rainbow', 'hue', 'speed', 'chance', 'saturation'],
+    'sinusoid': ['rainbow', 'hue', 'speed', 'saturation'],
     'perlin': ['speed', 'saturation', 'scale'],
-    'lava': ['hue', 'speed', 'scale']
+    'lava': ['rainbow', 'hue', 'speed', 'scale']
 };
 
 async function setEffect(){
     let effectCombobox = document.getElementById("effectSelect");
-    await fetch(IP + 'api?function=effect&effect='+effectCombobox.value);
+    await fetch('http://' + IP + '/api?function=effect&effect='+effectCombobox.value);
     await showEffectSettings();
 }
 async function imageLoad(){
     let imageTB = document.getElementById("imageTB");
-    await fetch(IP + 'api?function=image&image='+imageTB.value);
+    await fetch('http://' + IP + '/api?function=image&image='+imageTB.value);
     await onChange();
 }
 async function onChange(){
@@ -66,7 +72,7 @@ async function onChange(){
     scale = scaleSlider.value;
     brightness = brightnessSlider.value;
 
-    let response = await fetch(IP + 'api?' + new URLSearchParams({
+    let response = await fetch('http://' + IP + '/api?' + new URLSearchParams({
         'function': 'effectSettings',
         'hue': hue,
         'rainbow': rainbow-0,
@@ -75,18 +81,18 @@ async function onChange(){
         'chance': chance,
         'scale': scale
     }));
-    response = await fetch(IP + 'api?' + new URLSearchParams({
+    response = await fetch('http://' + IP + '/api?' + new URLSearchParams({
         'function': 'matrixSettings',
         'brightness': brightness
     }));
     await reloadSettings();
 }
 async function reloadSettings(){
-    let response = await fetch(IP + 'api?' + new URLSearchParams({
+    let response = await fetch('http://' + IP + '/api?' + new URLSearchParams({
         'function': 'getEffectSettings'
     }));
     let effectSettings = await response.json();
-    response = await fetch(IP + 'api?' + new URLSearchParams({
+    response = await fetch('http://' + IP + '/api?' + new URLSearchParams({
         'function': 'getMatrixSettings'
     }));
     let matrixSettings = await response.json();
@@ -155,32 +161,35 @@ async function showEffectSettings(){
 
     let rainbowCB = document.getElementById('rainbow');
 
-    if(settings[effectCombobox.value].indexOf('hue') != -1){
+    if(settings[effectCombobox.value].includes('hue')){
         rainbowCheckbox.style.display = 'flex';
-        if(!rainbowCB.checked)
+        if(!settings[effectCombobox.value].includes('rainbow') || !rainbowCB.checked)
             hueSlider.style.display = 'flex';
         else
             hueSlider.style.display = 'none';
+    }else if(settings[effectCombobox.value].includes('rainbow')){
+        hueSlider.style.display = 'none';
+        rainbowCheckbox.style.display = 'flex';
     }else{
         hueSlider.style.display = 'none';
         rainbowCheckbox.style.display = 'none';
     }
-    if(settings[effectCombobox.value].indexOf('speed') != -1){
+    if(settings[effectCombobox.value].includes('speed')){
         speedSlider.style.display = 'flex';
     }else{
         speedSlider.style.display = 'none';
     }
-    if(settings[effectCombobox.value].indexOf('chance') != -1){
+    if(settings[effectCombobox.value].includes('chance')){
         chanceSlider.style.display = 'flex';
     }else{
         chanceSlider.style.display = 'none';
     }
-    if(settings[effectCombobox.value].indexOf('saturation') != -1){
+    if(settings[effectCombobox.value].includes('saturation')){
         saturationSlider.style.display = 'flex';
     }else{
         saturationSlider.style.display = 'none';
     }
-    if(settings[effectCombobox.value].indexOf('scale') != -1){
+    if(settings[effectCombobox.value].includes('scale')){
         scaleSlider.style.display = 'flex';
     }else{
         scaleSlider.style.display = 'none';

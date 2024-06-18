@@ -11,18 +11,6 @@ class Vector2{
 	}
 }
 
-let cScale = 1;
-
-let pixels = [];
-
-for(let y = 0; y < HEIGHT; y++){
-	pixels.push([]);
-	for(let x = 0; x < WIDTH; x++){
-		pixels[y][x] = '#000000';
-	}
-}
-
-
 let canvasBox = document.getElementById('imageDrawCanvasBox');
 let colorPicker = document.getElementById('imageDrawColorPicker');
 let canvas = document.getElementById('imageDrawCanvas');
@@ -35,7 +23,11 @@ palleteCanvas.width = canvasBox.offsetWidth - 30;
 palleteCanvas.height = palleteCanvas.width/4;
 let pctx = palleteCanvas.getContext('2d');
 
-pallete = ['#ffffff', '#7f7f7f', '#000000', '#f07088', '#ff3f7f', '#ff0000', '#ff3000', '#ba2a0d', '#ffff00', '#fad818', '#00ff00', '#30e850', '#00ffff', '#54c4ff', '#0000ff', '#7f00ff'] 
+var cScale = 1
+var pixels = []
+var play = false
+var pallete = ['#ffffff', '#7f7f7f', '#000000', '#f07088', '#ff3f7f', '#ff0000', '#ff3000', '#ba2a0d', '#ffff00', '#fad818', '#00ff00', '#30e850', '#00ffff', '#54c4ff', '#0000ff', '#7f00ff'] 
+
 
 let isPressed = false;
 let moveOnPixel = new Vector2(-1, -1);
@@ -46,6 +38,37 @@ let options = {
 	brushSize: 1,
 	opacity: 1
 };
+
+for(let y = 0; y < HEIGHT; y++){
+	pixels.push([]);
+	for(let x = 0; x < WIDTH; x++){
+		pixels[y][x] = '#000000';
+	}
+}
+
+function copyPixels(){
+	let pxls = []
+	for(let y = 0; y < HEIGHT; y++){
+		pxls.push([]);
+		for(let x = 0; x < WIDTH; x++){
+			pxls[y].push(pixels[y][x]);
+		}
+	}
+	return pxls
+}
+function eqPixels(pixels1, pixels2){
+	for(let y = 0; y < HEIGHT; y++){
+		for(let x = 0; x < WIDTH; x++){
+			if(pixels1[y][x] != pixels2[y][x])
+				return false
+		}
+	}
+	return true
+}
+
+var prevs = [copyPixels()]
+var selectedPrev = 0
+
 
 function opacityRGB(opacity, fcolor, bcolor){
 	let r = Math.round(parseInt(fcolor.slice(1, 3), 16)*opacity+parseInt(bcolor.slice(1, 3), 16)*(1-opacity)).toString(16);
@@ -58,10 +81,13 @@ function opacityRGB(opacity, fcolor, bcolor){
 }
 
 canvas.addEventListener('mouseup', function(){
-	isPressed = false;
-	moveOnPixel.x = -1;
-	moveOnPixel.y = -1;
-});
+	isPressed = false
+	moveOnPixel.x = -1
+	moveOnPixel.y = -1
+	prevs = prevs.slice(0, selectedPrev)
+	prevs.push(copyPixels())
+	selectedPrev++
+})
 canvas.addEventListener('mousedown', function(e){
 	isPressed = true;
 	let pos = windowToCanvas(canvas, e.clientX, e.clientY);
@@ -111,7 +137,7 @@ canvas.addEventListener('mousedown', function(e){
 		}
 		figureType = 'square';
 	}
-});
+})
 canvas.addEventListener('mousemove', function(e){
 	let pos = windowToCanvas(canvas, e.clientX, e.clientY);
 	if(isPressed && (moveOnPixel.x != Math.floor(pos.x/(canvas.width/WIDTH)) || moveOnPixel.y != Math.floor(pos.y/(canvas.height/HEIGHT)))){
@@ -149,12 +175,12 @@ canvas.addEventListener('mousemove', function(e){
 	}else if(moveOnPixel.x != Math.round(pos.x/(canvas.width/WIDTH)) || moveOnPixel.y != Math.round(pos.y/(canvas.height/HEIGHT))){
 		cursor = new Vector2(Math.floor(pos.x/(canvas.width/WIDTH)), Math.floor(pos.y/(canvas.height/HEIGHT)));
 	}
-});
+})
 palleteCanvas.addEventListener('mousedown', function(e){
 	pos = windowToCanvas(palleteCanvas, e.clientX, e.clientY);
 	colorPicker.value=pallete[Math.floor(pos.x/(palleteCanvas.width/8))*2+Math.floor(pos.y/(palleteCanvas.height/2))];
 	colorPicker.dispatchEvent(new Event('input', { bubbles: true }));
-});
+})
 
 function render(){
 	ctx.scale(cScale, cScale);
@@ -218,109 +244,99 @@ function windowToCanvas(cnvs, x, y) {
 }
 
 async function sendImage(){
-	let data = '';
+	let data = []
 	for(let y = 0; y < HEIGHT; y++){
 		for(let x = 0; x < WIDTH; x++){
-			if(pixels[y][x].length == 9){
-				data += pixels[y][x].substr(1,9);
-			}else{
-				data += pixels[y][x].substr(1,7) + 'ff';
-			}
+			data.push(parseInt(pixels[y][x].slice(1, 3), 16))
+			data.push(parseInt(pixels[y][x].slice(3, 5), 16))
+			data.push(parseInt(pixels[y][x].slice(5, 7), 16))
 		}
 	}
-    await fetch(IP + 'api?function=image', {
+	console.log(new Uint8Array(data))
+	console.log(new Blob([new Uint8Array(data)]))
+    await fetch('http://' + IP + '/api?function=image', {
 		method: 'POST',
 		mode: "cors",
     	ache: "no-cache",
-		body: data
-	});
-    await showEffectSettings();
+		body: new Blob([new Uint8Array(data)])
+	})
+    await showEffectSettings()
 }
 
-let mode = 'brush';
+var mode = 'brush';
 
+var playPauseIcon = document.querySelector('#playpause-btn>i')
+var paintToolBrush = document.getElementById('paint-tool-brush')
+var paintToolEraser = document.getElementById('paint-tool-eraser')
+var paintToolFill = document.getElementById('paint-tool-fill')
+var paintToolSquare = document.getElementById('paint-tool-square')
+var paintToolEyeDropper = document.getElementById('paint-tool-eye-dropper')
+
+
+function undo(){
+	if(selectedPrev > 0){
+		selectedPrev--
+		pixels = prevs[selectedPrev]
+	}
+}
+function redo(){
+	if(selectedPrev < prevs.length-1){
+		selectedPrev++
+		pixels = prevs[selectedPrev]
+	}
+}
 function eBrush(){
-	let paintToolBrush = document.getElementById('paint-tool-brush');
-	let paintToolEraser = document.getElementById('paint-tool-eraser');
-	let paintToolFill = document.getElementById('paint-tool-fill');
-	let paintToolSquare = document.getElementById('paint-tool-square');
-	let paintToolEyeDropper = document.getElementById('paint-tool-eye-dropper');
-
-	paintToolBrush.style.background = '#ddd';
-	paintToolEraser.style.background = '#fff';
-	paintToolFill.style.background = '#fff';
-	paintToolSquare.style.background = '#fff';
-	paintToolEyeDropper.style.background = '#fff';
-	mode = 'brush';
+	paintToolBrush.style.background = '#ddd'
+	paintToolEraser.style.background = '#fff'
+	paintToolFill.style.background = '#fff'
+	paintToolSquare.style.background = '#fff'
+	paintToolEyeDropper.style.background = '#fff'
+	mode = 'brush'
 }
 function eEraser(){
-	let paintToolBrush = document.getElementById('paint-tool-brush');
-	let paintToolEraser = document.getElementById('paint-tool-eraser');
-	let paintToolFill = document.getElementById('paint-tool-fill');
-	let paintToolSquare = document.getElementById('paint-tool-square');
-	let paintToolEyeDropper = document.getElementById('paint-tool-eye-dropper');
-
-	paintToolBrush.style.background = '#fff';
-	paintToolEraser.style.background = '#ddd';
-	paintToolFill.style.background = '#fff';
-	paintToolSquare.style.background = '#fff';
-	paintToolEyeDropper.style.background = '#fff';
-	mode = 'eraser';
+	paintToolBrush.style.background = '#fff'
+	paintToolEraser.style.background = '#ddd'
+	paintToolFill.style.background = '#fff'
+	paintToolSquare.style.background = '#fff'
+	paintToolEyeDropper.style.background = '#fff'
+	mode = 'eraser'
 }
 function eFill(){
-	let paintToolBrush = document.getElementById('paint-tool-brush');
-	let paintToolEraser = document.getElementById('paint-tool-eraser');
-	let paintToolFill = document.getElementById('paint-tool-fill');
-	let paintToolSquare = document.getElementById('paint-tool-square');
-	let paintToolEyeDropper = document.getElementById('paint-tool-eye-dropper');
-
-	paintToolBrush.style.background = '#fff';
-	paintToolEraser.style.background = '#fff';
-	paintToolFill.style.background = '#ddd';
-	paintToolSquare.style.background = '#fff';
-	paintToolEyeDropper.style.background = '#fff';
-	mode = 'fill';
+	paintToolBrush.style.background = '#fff'
+	paintToolEraser.style.background = '#fff'
+	paintToolFill.style.background = '#ddd'
+	paintToolSquare.style.background = '#fff'
+	paintToolEyeDropper.style.background = '#fff'
+	mode = 'fill'
 }
 function eSquare(){
-	let paintToolBrush = document.getElementById('paint-tool-brush');
-	let paintToolEraser = document.getElementById('paint-tool-eraser');
-	let paintToolFill = document.getElementById('paint-tool-fill');
-	let paintToolSquare = document.getElementById('paint-tool-square');
-	let paintToolEyeDropper = document.getElementById('paint-tool-eye-dropper');
-
-	paintToolBrush.style.background = '#fff';
-	paintToolEraser.style.background = '#fff';
-	paintToolFill.style.background = '#fff';
-	paintToolSquare.style.background = '#ddd';
-	paintToolEyeDropper.style.background = '#fff';
-	mode = 'square';
+	paintToolBrush.style.background = '#fff'
+	paintToolEraser.style.background = '#fff'
+	paintToolFill.style.background = '#fff'
+	paintToolSquare.style.background = '#ddd'
+	paintToolEyeDropper.style.background = '#fff'
+	mode = 'square'
 }
 function eEyeDropper(){
-	let paintToolBrush = document.getElementById('paint-tool-brush');
-	let paintToolEraser = document.getElementById('paint-tool-eraser');
-	let paintToolFill = document.getElementById('paint-tool-fill');
-	let paintToolSquare = document.getElementById('paint-tool-square');
-	let paintToolEyeDropper = document.getElementById('paint-tool-eye-dropper');
-
-	paintToolBrush.style.background = '#fff';
-	paintToolEraser.style.background = '#fff';
-	paintToolFill.style.background = '#fff';
-	paintToolSquare.style.background = '#fff';
-	paintToolEyeDropper.style.background = '#ddd';
-	mode = 'eye-dropper';
+	paintToolBrush.style.background = '#fff'
+	paintToolEraser.style.background = '#fff'
+	paintToolFill.style.background = '#fff'
+	paintToolSquare.style.background = '#fff'
+	paintToolEyeDropper.style.background = '#ddd'
+	mode = 'eye-dropper'
 }
-function updatePaintToolsOptions(){
-	let brushSizeSlider = document.getElementById('brushSize');
-	let opacitySlider = document.getElementById('opacity');
-
-	options['brushSize'] = brushSizeSlider.value;
-	options['opacity'] = opacitySlider.value/100;
-
-	let brushSizeLabel = document.getElementById('brushSizeLabel');
-	let opacityLabel = document.getElementById('opacityLabel');
-
-	brushSizeLabel.innerText = brushSizeSlider.value + 'пкс';
-	opacityLabel.innerText = opacitySlider.value + '%';
+async function ePlayPause(){
+	if(play){
+		playPauseIcon.classList.remove('fa-pause')
+		playPauseIcon.classList.add('fa-play')
+		play = false
+	}else{
+		playPauseIcon.classList.remove('fa-play')
+		playPauseIcon.classList.add('fa-pause')
+		play = true
+	}
+	prevs = []
+	selectedPrev = -1
 }
 tippy('#paint-tool-options', {
 	content: `
@@ -341,23 +357,55 @@ tippy('#paint-tool-options', {
 	theme: 'light-border',
 	animation: 'shift-away',
 	arrow: tippy.roundArrow
-});
-async function eRefresh(){
-	let response = await fetch(IP + 'api?function=getMatrix');
-	let data = await response.text();
-	let i = 0;
-	for(let y = 0; y < HEIGHT; y++){
-		for(let x = 0; x < WIDTH; x++){
-			pixels[y][x] = '#'+data.substr(i*6, 6);
-			i++;
-		}
-	}
-    await showEffectSettings();
+})
+function updatePaintToolsOptions(){
+	let brushSizeSlider = document.getElementById('brushSize')
+	let opacitySlider = document.getElementById('opacity')
+
+	options['brushSize'] = brushSizeSlider.value
+	options['opacity'] = opacitySlider.value/100
+
+	let brushSizeLabel = document.getElementById('brushSizeLabel')
+	let opacityLabel = document.getElementById('opacityLabel')
+
+	brushSizeLabel.innerText = brushSizeSlider.value + 'пкс'
+	opacityLabel.innerText = opacitySlider.value + '%'
 }
 
-eBrush();
-eRefresh();
+function icthc(r, g, b){
+	let hr = r.toString(16)
+	let hg = g.toString(16)
+	let hb = b.toString(16)
+	if(hr.length == 1) hr = '0' + hr
+	if(hg.length == 1) hg = '0' + hg
+	if(hb.length == 1) hb = '0' + hb
+	return '#'+hr+hg+hb
+}
+
+websocket.addEventListener("open", (event) => {
+	websocket.send('get_matrix')
+});
+
+
+websocket.addEventListener('message', (event) => {
+	let i = 0
+	event.data.stream().getReader().read().then((read) => {
+		for(let y = 0; y < HEIGHT; y++){
+			for(let x = 0; x < WIDTH; x++){
+				pixels[y][x] = icthc(read.value[i*3], read.value[i*3+1], read.value[i*3+2])
+				i++
+			}
+		}
+	})
+})
+
+
+eBrush()
 
 setInterval(() => {
-	render();
-}, 6);
+	render()
+}, 6)
+
+setInterval(() => {
+	if(play) websocket.send('get_matrix')
+}, 1000/20)

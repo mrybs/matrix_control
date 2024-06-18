@@ -830,21 +830,21 @@ Discarded input sections
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .literal._Z10showEffectv
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .literal._ZN10LinkedListI6StringE6AppendES0_
+ .literal._ZN10vectorI6StringE6AppendES0_
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .literal._Z8strsplit6Stringc
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .literal._ZN10LinkedListI6StringE10getByIndexEx
+ .literal._ZN10vectorI6StringE10getByIndexEx
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .literal._Z7findArg10LinkedListI3argE6String
+ .literal._Z7findArg10vectorI3argE6String
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .literal._Z6getArg10LinkedListI3argE6String
+ .literal._Z6getArg10vectorI3argE6String
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .literal._ZN10LinkedListI6StringE5ClearEv
+ .literal._ZN10vectorI6StringE5ClearEv
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .literal._Z9strToArgs6String
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .literal._Z6handle6String10LinkedListI3argE
+ .literal._Z6handle6String10vectorI3argE
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .literal.setup
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
@@ -877,13 +877,13 @@ Discarded input sections
                 0x0000000000000000        0x2 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .text._Z13setBrightnessh
                 0x0000000000000000       0x31 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .text._ZN10LinkedListI6StringE6AppendES0_
+ .text._ZN10vectorI6StringE6AppendES0_
                 0x0000000000000000       0x6c /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .text._Z8strsplit6Stringc
                 0x0000000000000000      0x10b /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .text._ZN10LinkedListI6StringE10getByIndexEx
+ .text._ZN10vectorI6StringE10getByIndexEx
                 0x0000000000000000       0x49 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .text._ZN10LinkedListI6StringE5ClearEv
+ .text._ZN10vectorI6StringE5ClearEv
                 0x0000000000000000       0x4b /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .text._Z9strToArgs6String
                 0x0000000000000000      0x191 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
@@ -898,20 +898,20 @@ Discarded input sections
  .rodata.BUILTIN_LED
                 0x0000000000000000        0x4 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .xt.lit        0x0000000000000000      0x138 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .xt.lit._ZN10LinkedListI6StringE6AppendES0_
+ .xt.lit._ZN10vectorI6StringE6AppendES0_
                 0x0000000000000000        0x8 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .xt.lit._ZN10LinkedListI6StringE5ClearEv
+ .xt.lit._ZN10vectorI6StringE5ClearEv
                 0x0000000000000000        0x8 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .xt.prop._ZN14CLEDController5lanesEv
                 0x0000000000000000       0x24 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .xt.prop._ZNK14CLEDController17getMaxRefreshRateEv
                 0x0000000000000000       0x24 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .xt.prop       0x0000000000000000      0xe40 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .xt.prop._ZN10LinkedListI6StringE6AppendES0_
+ .xt.prop._ZN10vectorI6StringE6AppendES0_
                 0x0000000000000000       0x48 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .xt.prop._ZN10LinkedListI6StringE10getByIndexEx
+ .xt.prop._ZN10vectorI6StringE10getByIndexEx
                 0x0000000000000000       0x78 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .xt.prop._ZN10LinkedListI6StringE5ClearEv
+ .xt.prop._ZN10vectorI6StringE5ClearEv
                 0x0000000000000000       0x48 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .literal._ZN16ESP8266WiFiClass9printDiagER5Print
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/libraries/ESP8266WiFi/ESP8266WiFi.a(ESP8266WiFi.cpp.o)
@@ -13418,40 +13418,40 @@ END GROUP
                 0x0000000040202778                _ZN3argC2ERKS_
                 0x0000000040202778                _ZN3argC1ERKS_
  *fill*         0x000000004020279b        0x1 
- .text._ZN10LinkedListI3argE6AppendES0_
+ .text._ZN10vectorI3argE6AppendES0_
                 0x000000004020279c       0x50 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                          0x6c (size before relaxing)
-                0x000000004020279c                _ZN10LinkedListI3argE6AppendES0_
- .text._ZN10LinkedListI3argEC2ERKS1_
+                0x000000004020279c                _ZN10vectorI3argE6AppendES0_
+ .text._ZN10vectorI3argEC2ERKS1_
                 0x00000000402027ec       0x3f /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                          0x53 (size before relaxing)
-                0x00000000402027ec                _ZN10LinkedListI3argEC1ERKS1_
-                0x00000000402027ec                _ZN10LinkedListI3argEC2ERKS1_
+                0x00000000402027ec                _ZN10vectorI3argEC1ERKS1_
+                0x00000000402027ec                _ZN10vectorI3argEC2ERKS1_
  *fill*         0x000000004020282b        0x1 
- .text._Z7findArg10LinkedListI3argE6String
+ .text._Z7findArg10vectorI3argE6String
                 0x000000004020282c       0x5b /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                          0x67 (size before relaxing)
-                0x000000004020282c                _Z7findArg10LinkedListI3argE6String
+                0x000000004020282c                _Z7findArg10vectorI3argE6String
  *fill*         0x0000000040202887        0x1 
- .text._Z6getArg10LinkedListI3argE6String
+ .text._Z6getArg10vectorI3argE6String
                 0x0000000040202888       0x79 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                          0x95 (size before relaxing)
-                0x0000000040202888                _Z6getArg10LinkedListI3argE6String
+                0x0000000040202888                _Z6getArg10vectorI3argE6String
  *fill*         0x0000000040202901        0x3 
  .text._ZN16esp8266webserver24ESP8266WebServerTemplateI10WiFiServerE2onERK3Uri10HTTPMethodSt8functionIFvvEE
                 0x0000000040202904       0xae /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                          0xfe (size before relaxing)
                 0x0000000040202904                _ZN16esp8266webserver24ESP8266WebServerTemplateI10WiFiServerE2onERK3Uri10HTTPMethodSt8functionIFvvEE
  *fill*         0x00000000402029b2        0x2 
- .text._ZN10LinkedListI3argE5ClearEv
+ .text._ZN10vectorI3argE5ClearEv
                 0x00000000402029b4       0x3f /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                          0x4b (size before relaxing)
-                0x00000000402029b4                _ZN10LinkedListI3argE5ClearEv
+                0x00000000402029b4                _ZN10vectorI3argE5ClearEv
  *fill*         0x00000000402029f3        0x1 
- .text._Z6handle6String10LinkedListI3argE
+ .text._Z6handle6String10vectorI3argE
                 0x00000000402029f4     0x12a6 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                        0x1fae (size before relaxing)
-                0x0000000040202aec                _Z6handle6String10LinkedListI3argE
+                0x0000000040202aec                _Z6handle6String10vectorI3argE
  *fill*         0x0000000040203c9a        0x2 
  .text._ZN16esp8266webserver24ESP8266WebServerTemplateI10WiFiServerE15RequestArgumentD2Ev
                 0x0000000040203c9c       0x20 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
@@ -15180,17 +15180,17 @@ END GROUP
                 0x000000004020cecc        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .literal._ZN3argC5ERKS_
                 0x000000004020cecc        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .literal._ZN10LinkedListI3argE6AppendES0_
+ .literal._ZN10vectorI3argE6AppendES0_
                 0x000000004020cecc        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .literal._ZN10LinkedListI3argEC5ERKS1_
+ .literal._ZN10vectorI3argEC5ERKS1_
                 0x000000004020cecc        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .literal._ZN10LinkedListI3argE10getByIndexEx
+ .literal._ZN10vectorI3argE10getByIndexEx
                 0x000000004020cecc        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .literal._ZNSt8functionIFvvEEC5ERKS1_
                 0x000000004020cecc        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .literal._ZN16esp8266webserver24ESP8266WebServerTemplateI10WiFiServerE2onERK3Uri10HTTPMethodSt8functionIFvvEE
                 0x000000004020cecc        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .literal._ZN10LinkedListI3argE5ClearEv
+ .literal._ZN10vectorI3argE5ClearEv
                 0x000000004020cecc        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
  .literal._ZN16esp8266webserver24ESP8266WebServerTemplateI10WiFiServerE15RequestArgumentD5Ev
                 0x000000004020cecc        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
@@ -15428,9 +15428,9 @@ END GROUP
  *fill*         0x000000004020d08c        0x0 
  *fill*         0x000000004020d08c        0x0 
  *fill*         0x000000004020d08c        0x0 
- .text._ZN10LinkedListI3argE10getByIndexEx
+ .text._ZN10vectorI3argE10getByIndexEx
                 0x000000004020d08c       0x4a /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
-                0x000000004020d08c                _ZN10LinkedListI3argE10getByIndexEx
+                0x000000004020d08c                _ZN10vectorI3argE10getByIndexEx
  *fill*         0x000000004020d0d6        0x0 
  *fill*         0x000000004020d0d6        0x0 
  *fill*         0x000000004020d0d6        0x2 
@@ -22467,7 +22467,7 @@ END GROUP
                                           0xc (size before relaxing)
  .rodata._Z10showEffectv.str1.1
                 0x000000003ffe89c3       0x33 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
- .rodata._Z6handle6String10LinkedListI3argE.str1.1
+ .rodata._Z6handle6String10vectorI3argE.str1.1
                 0x000000003ffe89f6      0x28d /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                         0x2a4 (size before relaxing)
  .rodata.setup.str1.1
@@ -25890,15 +25890,15 @@ OUTPUT(/tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/WS2812-wifi_matrix
  .xt.lit._ZN3argC2ERKS_
                 0x0000000000000000        0x8 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
 
-.xt.lit._ZN10LinkedListI3argE6AppendES0_
+.xt.lit._ZN10vectorI3argE6AppendES0_
                 0x0000000000000000        0x0
- .xt.lit._ZN10LinkedListI3argE6AppendES0_
+ .xt.lit._ZN10vectorI3argE6AppendES0_
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                           0x8 (size before relaxing)
 
-.xt.lit._ZN10LinkedListI3argEC2ERKS1_
+.xt.lit._ZN10vectorI3argEC2ERKS1_
                 0x0000000000000000        0x0
- .xt.lit._ZN10LinkedListI3argEC2ERKS1_
+ .xt.lit._ZN10vectorI3argEC2ERKS1_
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                           0x8 (size before relaxing)
 
@@ -25908,9 +25908,9 @@ OUTPUT(/tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/WS2812-wifi_matrix
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                           0x8 (size before relaxing)
 
-.xt.lit._ZN10LinkedListI3argE5ClearEv
+.xt.lit._ZN10vectorI3argE5ClearEv
                 0x0000000000000000        0x0
- .xt.lit._ZN10LinkedListI3argE5ClearEv
+ .xt.lit._ZN10vectorI3argE5ClearEv
                 0x0000000000000000        0x0 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
                                           0x8 (size before relaxing)
 
@@ -26390,19 +26390,19 @@ OUTPUT(/tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/WS2812-wifi_matrix
  .xt.prop._ZN3argC2ERKS_
                 0x0000000000000000       0x30 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
 
-.xt.prop._ZN10LinkedListI3argE6AppendES0_
+.xt.prop._ZN10vectorI3argE6AppendES0_
                 0x0000000000000000       0x48
- .xt.prop._ZN10LinkedListI3argE6AppendES0_
+ .xt.prop._ZN10vectorI3argE6AppendES0_
                 0x0000000000000000       0x48 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
 
-.xt.prop._ZN10LinkedListI3argEC2ERKS1_
+.xt.prop._ZN10vectorI3argEC2ERKS1_
                 0x0000000000000000       0x48
- .xt.prop._ZN10LinkedListI3argEC2ERKS1_
+ .xt.prop._ZN10vectorI3argEC2ERKS1_
                 0x0000000000000000       0x48 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
 
-.xt.prop._ZN10LinkedListI3argE10getByIndexEx
+.xt.prop._ZN10vectorI3argE10getByIndexEx
                 0x0000000000000000       0x78
- .xt.prop._ZN10LinkedListI3argE10getByIndexEx
+ .xt.prop._ZN10vectorI3argE10getByIndexEx
                 0x0000000000000000       0x78 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
 
 .xt.prop._ZNSt8functionIFvvEEC2ERKS1_
@@ -26415,9 +26415,9 @@ OUTPUT(/tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/WS2812-wifi_matrix
  .xt.prop._ZN16esp8266webserver24ESP8266WebServerTemplateI10WiFiServerE2onERK3Uri10HTTPMethodSt8functionIFvvEE
                 0x0000000000000000       0x48 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
 
-.xt.prop._ZN10LinkedListI3argE5ClearEv
+.xt.prop._ZN10vectorI3argE5ClearEv
                 0x0000000000000000       0x48
- .xt.prop._ZN10LinkedListI3argE5ClearEv
+ .xt.prop._ZN10vectorI3argE5ClearEv
                 0x0000000000000000       0x48 /tmp/arduino/sketches/B773F15DA77CD6E08BFD91FDAF2D636D/sketch/WS2812-wifi_matrix.ino.cpp.o
 
 .xt.prop._ZN16esp8266webserver24ESP8266WebServerTemplateI10WiFiServerE15RequestArgumentD2Ev

@@ -4,7 +4,7 @@ import requests
 
 def send_image(image_path, matrix_ip):
     image = open(image_path, 'rb').read()
-    r = requests.post(f'http://{matrix_ip}/api?function=image', data=image, timeout=1000)
+    r = requests.post(f'http://{matrix_ip}/api', data=image, timeout=1000)
     print("Responded message:", r.text)
 
 if __name__ == '__main__':

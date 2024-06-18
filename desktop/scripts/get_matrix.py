@@ -5,19 +5,16 @@ import config
 
 def get_matrix(matrix_ip=config.MATRIX_IP, width=config.WIDTH, height=config.HEIGHT):
     request = f'http://{matrix_ip}/api?function=getMatrix'
-    hex_colors = requests.get(request, timeout=1000).text
+    colors = requests.get(request, timeout=1000).content
     matrix = []
-    i = 0
+    print(colors)
     for y in range(height):
         matrix.append([])
         for x in range(width):
             i = y*width+x
-            hex_color = hex_colors[i*6:i*6+6]
-            matrix[-1].append((
-                int(hex_color[:2], base=16), 
-                int(hex_color[2:4], base=16), 
-                int(hex_color[4:], base=16)
-            ))
+            color = colors[i*3:i*3+3]
+            matrix[-1].append(tuple(color))
+    print(matrix)
     return matrix
 
 
@@ -41,7 +38,7 @@ def print_matrix(matrix, aspectx=1, aspecty=2, numbers=False, dots=False):
 
 def show_matrix(matrix_ip=config.MATRIX_IP, width=config.WIDTH, height=config.HEIGHT, aspectx=1, aspecty=2, numbers=False, dots=False):
     request = f'http://{matrix_ip}/api?function=getMatrix'
-    hex_colors = requests.get(request, timeout=1000).text
+    colors = requests.get(request, timeout=1000).text
     matrix = []
     i = 0
     for y in range(height):
@@ -50,8 +47,8 @@ def show_matrix(matrix_ip=config.MATRIX_IP, width=config.WIDTH, height=config.HE
                 sys.stdout.write((str(i+1).rjust(aspecty) if _ == aspectx - 1 else ' '*aspecty) + ' ')
             for x in range(width):
                 i = y*width+x
-                hex_color = hex_colors[i*6:i*6+6]
-                sys.stdout.write(f'\033[48;2;{int(hex_color[:2], base=16)};{int(hex_color[2:4], base=16)};{int(hex_color[4:], base=16)}m' + (('.' if aspectx >= aspecty else ':') if dots else ' ')*aspecty)
+                color = colors[i*3:i*3+3]
+                sys.stdout.write(f'\033[48;2;{color[0]};{color[1]};{color[2]}m' + (('.' if aspectx >= aspecty else ':') if dots else ' ')*aspecty)
             sys.stdout.write('\033[0m')
             if numbers:
                 sys.stdout.write(str(i+1).ljust(aspecty))

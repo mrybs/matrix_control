@@ -1,5 +1,5 @@
-#ifndef LinkedList_hpp
-#define LinkedList_hpp
+#ifndef Vector_hpp
+#define Vector_hpp
 
 
 template <class T>
@@ -17,16 +17,16 @@ class ListNode {
 };
 
 template <class T>
-class LinkedList  {
+class Vector  {
   private:
     int length;
     ListNode<T>* head;
     ListNode<T>* tail;
     ListNode<T>* curr;
   public:
-    LinkedList();
-    LinkedList(const LinkedList<T>&);
-    ~LinkedList();
+    Vector();
+    Vector(const Vector<T>&);
+    ~Vector();
     T& getCurrent();
     T& First() const;
     T& Last() const;
@@ -44,11 +44,11 @@ class LinkedList  {
     void Clear();
     void PutFirstToLast();
     void Update(T elem);
-    LinkedList& operator = (const LinkedList<T>&);
+    Vector& operator = (const Vector<T>&);
 };
 
 template <class T>
-LinkedList<T>::LinkedList() {
+Vector<T>::Vector() {
     length = 0;
     head = nullptr;
     tail = nullptr;
@@ -56,7 +56,7 @@ LinkedList<T>::LinkedList() {
 }
 
 template <class T>
-LinkedList<T>::LinkedList(const LinkedList<T> & list) {
+Vector<T>::Vector(const Vector<T> & list) {
     length = 0;
     head = nullptr;
     tail = nullptr;
@@ -72,7 +72,7 @@ LinkedList<T>::LinkedList(const LinkedList<T> & list) {
 }
 
 template <class T>
-LinkedList<T> & LinkedList<T>::operator=(const LinkedList<T> & list)
+Vector<T> & Vector<T>::operator=(const Vector<T> & list)
 {
     Clear();
 
@@ -88,18 +88,18 @@ LinkedList<T> & LinkedList<T>::operator=(const LinkedList<T> & list)
 }
 
 template <class T>
-LinkedList<T>::~LinkedList() {
+Vector<T>::~Vector() {
     Clear();
 }
 
 template<class T>
-T& LinkedList<T>::getCurrent()
+T& Vector<T>::getCurrent()
 {
   return curr->element;
 }
 
 template<class T>
-T& LinkedList<T>::getByIndex(long long index)
+T& Vector<T>::getByIndex(long long index)
 {
   if(index < 0 || length <= index) return curr->element;
   long long i = 0; 
@@ -113,25 +113,25 @@ T& LinkedList<T>::getByIndex(long long index)
 }
 
 template<class T>
-T& LinkedList<T>::First() const
+T& Vector<T>::First() const
 {
   return head->element;
 }
 
 template<class T>
-T& LinkedList<T>::Last() const
+T& Vector<T>::Last() const
 {
   return tail->element;
 }
 
 template<class T>
-int LinkedList<T>::getLength()
+int Vector<T>::getLength()
 {
   return length;
 }
 
 template <class T>
-void LinkedList<T>::Append(T element)
+void Vector<T>::Append(T element)
 {
     ListNode<T> * node = new ListNode<T>(element, tail, nullptr);
 
@@ -147,7 +147,7 @@ void LinkedList<T>::Append(T element)
 }
 
 template <class T>
-void LinkedList<T>::DeleteLast()
+void Vector<T>::DeleteLast()
 {
     if(length == 0)
       return;
@@ -156,7 +156,7 @@ void LinkedList<T>::DeleteLast()
 }
 
 template <class T>
-void LinkedList<T>::DeleteFirst()
+void Vector<T>::DeleteFirst()
 {
     if(length == 0)
       return;
@@ -165,7 +165,7 @@ void LinkedList<T>::DeleteFirst()
 }
 
 template <class T>
-bool LinkedList<T>::next()
+bool Vector<T>::next()
 {
     if(length == 0)
         return false;
@@ -178,14 +178,14 @@ bool LinkedList<T>::next()
 }
 
 template <class T>
-bool LinkedList<T>::moveToStart()
+bool Vector<T>::moveToStart()
 {
     curr = head;
     return length != 0;
 }
 
 template<class T>
-bool LinkedList<T>::prev()
+bool Vector<T>::prev()
 {
     if(length == 0)
         return false;
@@ -198,14 +198,14 @@ bool LinkedList<T>::prev()
 }
 
 template <class T>
-void LinkedList<T>::Delete(T & elem)
+void Vector<T>::Delete(T & elem)
 {
     if(Search(elem))
         DeleteCurrent();
 }
 
 template <class T>
-void LinkedList<T>::DeleteCurrent()
+void Vector<T>::DeleteCurrent()
 {
     if(length == 0)
         return;
@@ -230,7 +230,7 @@ void LinkedList<T>::DeleteCurrent()
 }
 
 template <class T>
-bool LinkedList<T>::Search(T elem)
+bool Vector<T>::Search(T elem)
 {
     if(length == 0)
         return false;
@@ -243,7 +243,7 @@ bool LinkedList<T>::Search(T elem)
 }
 
 template <class T>
-void LinkedList<T>::PutFirstToLast()
+void Vector<T>::PutFirstToLast()
 {
   if(length < 2)
     return;
@@ -257,14 +257,14 @@ void LinkedList<T>::PutFirstToLast()
 }
 
 template <class T>
-void LinkedList<T>::Update(T elem)
+void Vector<T>::Update(T elem)
 {
     if(Search(elem))
         curr->element = elem;
 }
 
 template <class T>
-void LinkedList<T>::Clear()
+void Vector<T>::Clear()
 {
     if(length == 0)
         return;

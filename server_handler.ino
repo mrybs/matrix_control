@@ -1,55 +1,25 @@
-void handleGETApi() {
-  LinkedList<arg> args;
-  for (uint8_t i = 0; i < server.args(); i++) {
-    args.Append(arg(server.argName(i), server.arg(i)));
-  }
-  response R = handleGET("/api", args);
-  server.send(R.code, R.type, R.data);
+AsyncWebServerResponse* ApiResponse(AsyncWebServerRequest *request, response R) {
+  AsyncWebServerResponse *response;
+  response = request->beginResponse(R.code, R.type, R.data);
+  response->addHeader("Access-Control-Allow-Origin", "*");
+  response->addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  response->addHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  return response;
 }
 
-void handlePOSTApi() {
-  LinkedList<arg> args;
-  for (uint8_t i = 0; i < server.args(); i++) {
-    args.Append(arg(server.argName(i), server.arg(i)));
+void handleGETApi(AsyncWebServerRequest *request) {
+  Vector<arg> args;
+  for (uint8_t i = 0; i < request->args(); i++) {
+    args.Append(arg(request->argName(i), request->arg(i)));
   }
-  response R = handlePOST("/api", args);
-  server.send(R.code, R.type, R.data);
+  request->send(ApiResponse(request, handleGET("/api", args)));
 }
 
 void setBrightness(byte brightness){
   FastLED.setBrightness(MAX_BRIGHTNESS*brightness/39-2);
 }
 
-void handleGUI_index_html(){
-  //server.send(200, "text/html", index_html);
-  File f = SPIFFS.open("/index.html", "r");
-  if(!f) return server.send(500, "plain/text", "Could not open file index.html");
-  server.send(200, "text/html", f.readString().c_str());
-  f.close();
-}
-void handleGUI_index_js(){
-  //server.send(200, "text/javascript", index_js);
-  File f = SPIFFS.open("/index.js", "r");
-  if(!f) return server.send(500, "plain/text", "Could not open file index.js");
-  server.send(200, "text/javascript", f.readString().c_str());
-  f.close();
-}
-void handleGUI_styles_css(){
-  //server.send(200, "text/css", styles_css);
-  File f = SPIFFS.open("/styles.css", "r");
-  if(!f) return server.send(500, "plain/text", "Could not open file styles.css");
-  server.send(200, "text/css", f.readString().c_str());
-  f.close();
-}
-void handleGUI_canvas_js(){
-  //server.send(200, "text/javascript", canvas_js);
-  File f = SPIFFS.open("/canvas.js", "r");
-  if(!f) return server.send(500, "plain/text", "Could not open file canvas.js");
-  server.send(200, "text/javascript", f.readString().c_str());
-  f.close();
-}
-
-response handleGET(String path, LinkedList<arg> args){
+response handleGET(String path, Vector<arg> args){
   if(path == "/api"){
     if(findArg(args, "function")){
       String function = getArg(args, "function");
@@ -98,21 +68,24 @@ response handleGET(String path, LinkedList<arg> args){
         return response(200, "text/plain", "OK");
       }
       if(function == "getInfo"){
-        return response(200, "text/plain", String("NAME:") + INFO_NAME + 
-                                          String(";ABOUT:") + INFO_ABOUT + 
-                                          String(";PROGRAM_NAME:") + INFO_PROGRAM_NAME + 
-                                          String(";MAJOR_VERSION:") + INFO_MAJOR_VERSION + 
-                                          String(";MINOR_VERSION:") + INFO_MINOR_VERSION + 
-                                          String(";BUILD:") + INFO_BUILD +
-                                          String(";TYPE:") + INFO_BUILD_TYPE +
-                                          String(";SUBTYPE:") + INFO_BUILD_SUBTYPE +
-                                          String(";DEBUG:") + INFO_DEBUG);
+        String info = String("{\"name\": \"") + INFO_NAME + 
+                      String("\", \"about\": \"") + INFO_ABOUT + 
+                      String("\", \"program_name\": \"") + INFO_PROGRAM_NAME + 
+                      String("\", \"major_version\": \"") + INFO_MAJOR_VERSION + 
+                      String("\", \"minor_version\": \"") + INFO_MINOR_VERSION + 
+                      String("\", \"build\": \"") + INFO_BUILD +
+                      String("\", \"type\": \"") + INFO_BUILD_TYPE +
+                      String("\", \"subtype\": \"") + INFO_BUILD_SUBTYPE +
+                      String("\"}");
+        return response(200, "text/plain", info);
       }
       if(function == "effect"){
         if(!findArg(args, "effect")) 
           return response(200, "text/plain", "No effect specified");
         effect_id = getArg(args, "effect");
-        randomSinusoid();
+        if(effect_id == "sinusoid"){
+          randomSinusoid();
+        }
         return response(200, "text/plain", "OK");
       }
       if(function == "effectSettings"){
@@ -122,66 +95,26 @@ response handleGET(String path, LinkedList<arg> args){
         if(findArg(args, "saturation")) sSaturation = getArg(args, "saturation").toInt();
         if(findArg(args, "chance")) sChance = getArg(args, "chance").toInt();
         if(findArg(args, "scale")) sScale = getArg(args, "scale").toDouble();
+        return response(200, "text/plain", "OK");
       }
       if(function == "matrixSettings"){
         if(findArg(args, "brightness")) sBrightness = getArg(args, "brightness").toInt();
-      }
-      if(function == "getEffectSettings"){
-        return response(200, "application/json", "{\"effect_id\":\""+effect_id+"\","+
-                                           "\"hue\":\""+String(sHue)+"\","+
-                                           "\"rainbow\":\""+String(sRainbow)+"\","+
-                                           "\"speed\":\""+String(sSpeed)+"\","+
-                                           "\"chance\":\""+String(sChance)+"\","+
-                                           "\"saturation\":\""+String(sSaturation)+"\","+
-                                           "\"scale\":\""+String(sScale)+"\"}");
-      }
-      if(function == "getMatrixSettings"){
-        return response(200, "text/plain", "{\"brightness\":"+String(sBrightness)+"}");
-      }
-      if(function == "getMatrix"){
-        String image = "";
-        for(int i = 0; i < NUM_LEDS; i++){
-          CRGB pixel = getPixelByIndex(i);
-          String r = String(pixel.r, HEX);
-          String g = String(pixel.g, HEX);
-          String b = String(pixel.b, HEX);
-          if(r.length() == 1) r="0"+r;
-          if(g.length() == 1) g="0"+g;
-          if(b.length() == 1) b="0"+b;
-          image += r;
-          image += g;
-          image += b;
-        }
-        return response(200, "text/plain", image);
-      }
-    }
-  }
-  String m = "{\"status\": \"error\", \"message\": \"Not Found\", \"debug\": {\"path\": \""+path+"\", \"args\": {";
-  for(char i = 0; i < args.getLength(); i++){
-    m += "\"" + args.getByIndex(i).key + "\": \"" + args.getByIndex(i).data + "\"";
-    if(i != args.getLength()-1)
-      m += ", ";
-  }
-  m += "}}}";
-  return response(404, "text/plain", m);
-}
-
-response handlePOST(String path, LinkedList<arg> args){
-  if(path == "/api"){
-    if(findArg(args, "function")){
-      String function = getArg(args, "function");
-      if(function == "image"){
-        String image = server.arg("plain");
-        effect_id = "off";
-        for(int i = 0; i < NUM_LEDS; i++)
-          drawPixelByIndex(i, CRGB(
-            Utils::stoh(String(image[i*8])+"0")*15 + Utils::stoh(String(image[i*8+1])+"0"),
-            Utils::stoh(String(image[i*8+2])+"0")*15 + Utils::stoh(String(image[i*8+3])+"0"),
-            Utils::stoh(String(image[i*8+4])+"0")*15 + Utils::stoh(String(image[i*8+5])+"0")
-          ));
-          FastLED.show();
         return response(200, "text/plain", "OK");
       }
+      if(function == "getEffectSettings"){
+        String effectSettings = "{\"effect_id\":\""+effect_id+"\","+
+                                "\"hue\":\""+String(sHue)+"\","+
+                                "\"rainbow\":\""+String(sRainbow)+"\","+
+                                "\"speed\":\""+String(sSpeed)+"\","+
+                                "\"chance\":\""+String(sChance)+"\","+
+                                "\"saturation\":\""+String(sSaturation)+"\","+
+                                "\"scale\":\""+String(sScale)+"\"}";
+        return response(200, "application/json", effectSettings);
+      }
+      if(function == "getMatrixSettings"){
+        String matrixSettings = "{\"brightness\":"+String(sBrightness)+"}";
+        return response(200, "text/plain", matrixSettings);
+      }
     }
   }
   String m = "{\"status\": \"error\", \"message\": \"Not Found\", \"debug\": {\"path\": \""+path+"\", \"args\": {";
@@ -194,14 +127,23 @@ response handlePOST(String path, LinkedList<arg> args){
   return response(404, "text/plain", m);
 }
 
-String getArg(LinkedList<arg> args, String key){
+void handlePOST(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total) {
+  effect_id = "off";
+  uint8_t* image = data;
+  for(int i = 0; i < NUM_LEDS*3 && i < len; i+=3)
+    drawPixelByIndex(i/3, CRGB(image[i], image[i+1], image[i+2]));
+  FastLED.show();
+  request->send(ApiResponse(request, response(200, "text/plain", "OK")));
+}
+
+String getArg(Vector<arg> args, String key){
   for(int i = 0; i < args.getLength(); i++)
     if(args.getByIndex(i).key == key)
       return args.getCurrent().data;
   return "";
 }
 
-bool findArg(LinkedList<arg> args, String key){
+bool findArg(Vector<arg> args, String key){
   for(int i = 0; i < args.getLength(); i++)
     if(args.getByIndex(i).key == key)
       return true;
