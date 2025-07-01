@@ -1,0 +1,13 @@
+in i8  x, y
+in i8  width, height
+in i8 channels
+in i8  H, S, V
+in i16 speed
+in i32 time 
+
+main:
+    H = (y+1)*255/height+(x+1)*255/width+time*speed/250
+    S = 255
+    V = 255
+    channels = 0b00000111
+    out

@@ -1,0 +1,38 @@
+;mmatrix shaders assembly language example
+
+
+GLOBAL input
+    byte width
+    byte height
+    byte x
+    byte y
+    word speed
+    dword time
+
+GLOBAL output
+    byte H
+    byte S
+    byte V 
+
+GLOBAL main
+    mov W5 &y
+    add W5 1             ;y+1
+    mul W5 255           ;(y+1)*255
+    div W5 &height       ;(y+1)*255/height
+
+    mov W6 &x
+    add W6 1             ;x+1
+    mul W6 1             ;(x+1)*255
+    div W6 &width        ;(x+1)*255/width
+
+    mov D10 &time
+    mul D10 &speed 0.004 ;time*speed/250
+
+    mov &H 0
+    add &H W5 W6 D10     ;H=(y+1)*255/height+(x+1)*255/width+time*speed/250
+
+    mov &S 255           ;S=255
+
+    mov &V 255           ;V=255
+
+    exit

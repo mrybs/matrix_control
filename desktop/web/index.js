@@ -1,5 +1,5 @@
 
-const IP = '192.168.50.88';
+const IP = '192.168.50.77';
 var websocket
 if(IP == ''){
     websocket = new WebSocket(`ws://${window.location.host}/ws`)

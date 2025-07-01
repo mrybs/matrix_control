@@ -36,6 +36,8 @@
 
 #define WIFI_SSID "Mekakay"
 #define WIFI_PASS "123zxc456vbn"
+//#define WIFI_SSID "Xiaomi 14T"
+//#define WIFI_PASS "1234567890"
 //#define WIFI_CHANNEL 1
 //#define MMATRIX_TOKEN "mx.t.fa.mrybsmatrix:f0ca9b1ed21b01c515612f0bcc31ebcbdc899ed8d6c85a4f94eeb527f052fb8d_ca781836951a4c6f66dc26f946af717257c9bf5f4110259492746d530f03f83b" 
 //#define MMATRIX_IP "192.168.50.122"
@@ -89,7 +91,7 @@ String mode_id = "none";
 byte sChance = 20;
 byte sHue = 127;
 byte sSaturation = 0;
-int sSpeed = 256;
+uint16_t sSpeed = 256;
 bool sRainbow = false;
 float sScale = 1;
 
@@ -100,15 +102,10 @@ byte phi[WAVES_AMOUNT];
 byte A[WAVES_AMOUNT];
 Ball balls[BALLS_AMOUNT];
 
+//FLASH_MAP_SETUP_CONFIG(FLASH_MAP_MAX_FS)
 void setup() {
   ESP.wdtEnable(0);
   FastLED.addLeds<LED_TYPE, MATRIX_PIN, LED_ORDER>(leds, NUM_LEDS).setCorrection(CORRECTION);
-
-#ifdef WIFI_CHANNEL
-  WiFi.begin(WIFI_SSID, WIFI_PASS, WIFI_CHANNEL);
-#else
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
-#endif
   Serial.begin(115200);
   Serial.println("\nLoading...");
   Serial.println("Checking matrix...");
@@ -134,10 +131,26 @@ void setup() {
   while(dir.next()){
     Serial.println(dir.fileName());
   }
+  WiFi.persistent(false);
+  WiFi.disconnect(true);
+  delay(1000);
+  WiFi.mode(WIFI_STA);
+  int n = WiFi.scanNetworks();
+  for (int i = 0; i < n; i++){
+    Serial.print(WiFi.SSID(i));
+    Serial.print(" (");
+    Serial.print(WiFi.RSSI(i));
+    Serial.println(" dBm)");
+  }
   Serial.print("Trying to connect to ");
   Serial.print(WIFI_SSID);
   Serial.println("(1 min)");
   Serial.print("Connecting");
+  #ifdef WIFI_CHANNEL
+    WiFi.begin(WIFI_SSID, WIFI_PASS, WIFI_CHANNEL);
+  #else
+    WiFi.begin(WIFI_SSID, WIFI_PASS);
+  #endif
   short tries = 0;
   while (WiFi.status() != WL_CONNECTED && tries < 60) {
     delay(1000);
@@ -151,6 +164,7 @@ void setup() {
     Serial.println("/");
   }
   else Serial.println("\nDid not connect");
+  Serial.println(WiFi.status());
 #ifdef OTA_ENABLE
   ArduinoOTAInit();
 #endif
@@ -179,9 +193,33 @@ void setup() {
     request->send(200, "text/css", f.readString().c_str());
     f.close();
   });
-  server.on("/canvas.js", HTTP_GET, [](AsyncWebServerRequest *request){
-    File f = SPIFFS.open("/canvas.js", "r");
-    if(!f) request->send(500, "plain/text", "Could not open file canvas.js");
+  server.on("/canvas1.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    File f = SPIFFS.open("/canvas1.js", "r");
+    if(!f) request->send(500, "plain/text", "Could not open file canvas1.js");
+    request->send(200, "text/javascript", f.readString().c_str());
+    f.close();
+  });
+  server.on("/canvas2.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    File f = SPIFFS.open("/canvas2.js", "r");
+    if(!f) request->send(500, "plain/text", "Could not open file canvas2.js");
+    request->send(200, "text/javascript", f.readString().c_str());
+    f.close();
+  });
+  server.on("/canvas3.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    File f = SPIFFS.open("/canvas3.js", "r");
+    if(!f) request->send(500, "plain/text", "Could not open file canvas3.js");
+    request->send(200, "text/javascript", f.readString().c_str());
+    f.close();
+  });
+  server.on("/canvas4.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    File f = SPIFFS.open("/canvas4.js", "r");
+    if(!f) request->send(500, "plain/text", "Could not open file canvas4.js");
+    request->send(200, "text/javascript", f.readString().c_str());
+    f.close();
+  });
+  server.on("/canvas5.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    File f = SPIFFS.open("/canvas5.js", "r");
+    if(!f) request->send(500, "plain/text", "Could not open file canvas5.js");
     request->send(200, "text/javascript", f.readString().c_str());
     f.close();
   });

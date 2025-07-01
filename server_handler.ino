@@ -126,14 +126,35 @@ response handleGET(String path, Vector<arg> args){
   m += "}}}";
   return response(404, "text/plain", m);
 }
+static uint8_t imageBuffer[NUM_LEDS * 3];
 
 void handlePOST(AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total) {
-  effect_id = "off";
-  uint8_t* image = data;
-  for(int i = 0; i < NUM_LEDS*3 && i < len; i+=3)
-    drawPixelByIndex(i/3, CRGB(image[i], image[i+1], image[i+2]));
-  FastLED.show();
-  request->send(ApiResponse(request, response(200, "text/plain", "OK")));
+  // Защита от пустых данных
+  if (!data || total == 0) {
+    request->send(400, "text/plain", "No data");
+    return;
+  }
+
+  // Проверка размера
+  if (total != NUM_LEDS * 3) {
+    request->send(400, "text/plain", "Need exactly " + String(NUM_LEDS * 3) + " bytes");
+    return;
+  }
+
+  // Копирование фрагмента
+  memcpy(imageBuffer + index, data, (index + len <= total) ? len : total - index);
+
+  // Если данные получены полностью
+  if (index + len == total) {
+    effect_id = "off";
+    for (int i = 0; i < NUM_LEDS * 3; i += 3) {
+      drawPixelByIndex(i / 3, CRGB(imageBuffer[i], imageBuffer[i+1], imageBuffer[i+2]));
+    }
+    noInterrupts();
+    FastLED.show();
+    interrupts();
+    request->send(200, "text/plain", "OK");
+  }
 }
 
 String getArg(Vector<arg> args, String key){
